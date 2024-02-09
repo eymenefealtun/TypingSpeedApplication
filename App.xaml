@@ -1,0 +1,16 @@
+﻿<Application x:Class="TypingSpeedApplication.App"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:TypingSpeedApplication"
+             StartupUri="MainWindow.xaml">
+    <Application.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="Themes/ToggleButton/BackgroundThemeToggleButton.xaml" />
+                <ResourceDictionary Source="Themes/ComboBox/LanguageBoxTheme.xaml" />
+                <ResourceDictionary Source="Themes/Label/TimerLabelTheme.xaml" />
+                <ResourceDictionary Source="Themes/Button/RefreshButtonTheme.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
+    </Application.Resources>
+</Application>
