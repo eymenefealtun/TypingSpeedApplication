@@ -23,6 +23,10 @@ namespace TypingSpeedApplication
         public static string[] _resultWordArray;
         public static string[] _sourceWords;
 
+
+        List<Label> _words1;
+        List<Label> _words2;
+
         int _second = 7;
         public int Second
         {
@@ -50,7 +54,8 @@ namespace TypingSpeedApplication
             _languages = typeof(Language).Assembly.GetTypes().Where(t => t.IsSubclassOf(typeof(Language))).Select(t => (Language)Activator.CreateInstance(t)).ToList();
 
 
-
+            _words1 = new List<Label>();
+            _words2 = new List<Label>();
 
 
             _dispatcherTimer.Start();
@@ -84,12 +89,14 @@ namespace TypingSpeedApplication
             _sourceWords = await _languages.Where(x => x.GetType().Name == _currentLanguage).First().GetAllWordsAsync();
 
             // method
-            RefreshStack(stckPanel1, new List<Label>());
-            RefreshStack(stckPanel2, new List<Label>());
+            RefreshStack(stckPanel1, _words1);
+            RefreshStack(stckPanel2, _words2);
 
             Mouse.OverrideCursor = null;
 
         }
+
+
 
         private void RefreshStack(StackPanel panel, List<Label> labels)
         {
@@ -104,10 +111,10 @@ namespace TypingSpeedApplication
             for (int i = 0; i < _resultWordArray.Length; i++)
             {
                 Label lbl = new Label();
-                lbl.Background = i == 0 ? Brushes.LightGray : Brushes.Transparent;
+                lbl.Background = i == 0 && labels == _words1 ? Brushes.LightGray : Brushes.Transparent;
                 lbl.Content = _resultWordArray[i];
 
-                //lbl.Style
+                lbl.Style = (Style)FindResource("MainLabelTheme");
 
 
                 lbl.Measure(new Size(Double.PositiveInfinity, Double.PositiveInfinity));
@@ -119,7 +126,7 @@ namespace TypingSpeedApplication
                     break;
 
                 labels.Add(lbl);
-                panel.Children.Insert(i,lbl);
+                panel.Children.Insert(i, lbl);
 
             }
 

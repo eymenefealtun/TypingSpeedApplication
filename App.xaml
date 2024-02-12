@@ -10,6 +10,7 @@
                 <ResourceDictionary Source="Themes/ComboBox/LanguageBoxTheme.xaml" />
                 <ResourceDictionary Source="Themes/Label/TimerLabelTheme.xaml" />
                 <ResourceDictionary Source="Themes/Button/RefreshButtonTheme.xaml" />
+                <ResourceDictionary Source="Themes/Label/MainLabelTheme.xaml" />
             </ResourceDictionary.MergedDictionaries>
         </ResourceDictionary>
     </Application.Resources>
