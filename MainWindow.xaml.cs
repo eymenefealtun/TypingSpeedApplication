@@ -89,8 +89,7 @@ namespace TypingSpeedApplication
             _sourceWords = await _languages.Where(x => x.GetType().Name == _currentLanguage).First().GetAllWordsAsync();
 
             // method
-            RefreshStack(stckPanel1, _words1);
-            RefreshStack(stckPanel2, _words2);
+            RefreshGame();
 
             Mouse.OverrideCursor = null;
 
@@ -132,6 +131,20 @@ namespace TypingSpeedApplication
 
         }
 
+        private void RefreshGame()
+        {
+            _dispatcherTimer.Stop();
 
+            lblTimer.Content = "60";
+            _second = 60;
+
+            RefreshStack(stckPanel1, _words1);
+            RefreshStack(stckPanel2, _words2);
+        }
+
+        private void btnRefresh_Click(object sender, RoutedEventArgs e)
+        {
+            RefreshGame();
+        }
     }
 }

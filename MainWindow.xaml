@@ -218,6 +218,7 @@
                                     Height="40"
                                     Margin="20 0 0 0"
                                     Content="Refresh"
+                                    Click="btnRefresh_Click"
                                     Style="{StaticResource RefreshButtonTheme}"
                                     Background="#428bca"
                                     Foreground="White" />
