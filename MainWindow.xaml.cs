@@ -27,6 +27,12 @@ namespace TypingSpeedApplication
         List<Label> _words1;
         List<Label> _words2;
 
+        int _numberOfTrueWords = 0;
+        int _currentWordIndex = 0;
+        int _numbeOfWrongWords = 0;
+        int _numberOfFalseKeyStrokes = 0;
+        int _numberOfTrueKeyStrokes = 0;
+
         int _second = 7;
         public int Second
         {
@@ -146,5 +152,131 @@ namespace TypingSpeedApplication
         {
             RefreshGame();
         }
+
+        string _currentTextOfTextbox;
+        bool _isStartedBefore = false;
+        bool _isTextBoxChangedCanFire;
+        int _numberOfKeyStrokes = 0;
+        string _targetText;
+
+        private void tboxWrite_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            _currentTextOfTextbox = tboxWrite.Text;
+
+            if (!_isStartedBefore && !string.IsNullOrEmpty(tboxWrite.Text))
+            {
+                _isStartedBefore = true;
+                _dispatcherTimer.Start();
+            }
+            else if (tboxWrite.Text != string.Empty && !_isTextBoxChangedCanFire || tboxWrite.Text == " ")
+            {
+                tboxWrite.Text = string.Empty;
+                return;
+            }
+
+            _numberOfKeyStrokes++;
+
+            int currentLength = _currentTextOfTextbox.Length;
+
+            if (currentLength <= _targetText.Length)
+            {
+
+                string currentTargetText = _targetText.Substring(0, currentLength);
+
+                if (currentTargetText != _currentTextOfTextbox)
+                    CurrentTextFalse(_words1[_currentWordIndex]);
+                else
+                    CurrentTextRight(_words1[_currentWordIndex]);
+
+            }
+            else
+                CurrentTextFalse(_words1[_currentWordIndex]);
+
+
+        }
+        private void tboxWrite_PreviewKeyDown(object sender, KeyEventArgs e)
+        {
+            _targetText = _words1[_currentWordIndex].Content.ToString();
+
+            if (e.Key == Key.Escape)
+            {
+                RefreshGame();
+                return;
+            }
+
+            if (e.Key == Key.Space && tboxWrite.Text != string.Empty)
+            {
+                int lastIndex = _words1.Count;
+
+                if (_currentWordIndex == lastIndex - 1)
+                {
+                    _currentWordIndex = 0;
+                    GetAnotherStack(_words2);
+                    return;
+                }
+
+                _isTextBoxChangedCanFire = false;
+
+                if (_currentTextOfTextbox == _targetText)
+                    MarkedAsCorrect(_words1[_currentWordIndex], _words1[_currentWordIndex + 1]);
+                else
+                    MarkedAsIncorrect(_words1[_currentWordIndex], _words1[_currentWordIndex + 1]);
+
+            }
+            else
+                _isTextBoxChangedCanFire = true;
+
+        }
+
+        private void GetAnotherStack(List<Label> words2)
+        {
+            stckPanel1.Children.Clear();
+            stckPanel2.Children.Clear();
+            _words1 = new List<Label>();
+
+            for (int i = 0; i < words2.Count; i++)
+            {
+                stckPanel1.Children.Insert(i, words2[i]);
+                _words1.Add(words2[i]);
+            }
+
+            tboxWrite.Text = String.Empty;
+            RefreshStack(stckPanel2, _words2);
+        }
+
+        private void MarkedAsCorrect(Label label, Label nextLabel)
+        {
+            _numberOfTrueWords++;
+
+            label.Background = Brushes.Transparent;
+            label.Foreground = Brushes.Green;
+            nextLabel.Background = Brushes.LightGray;
+
+            _currentWordIndex++;
+        }
+
+        private void MarkedAsIncorrect(Label label, Label nextLabel)
+        {
+            _numbeOfWrongWords++;
+
+            label.Background = Brushes.Transparent;
+            label.Foreground = Brushes.Red;
+            nextLabel.Background = Brushes.LightGray;
+
+            _currentWordIndex++;
+        }
+
+        private void CurrentTextFalse(Label label)
+        {
+            label.Background = Brushes.Red;
+            _numberOfFalseKeyStrokes++;
+        }
+        private void CurrentTextRight(Label label)
+        {
+            label.Background = Brushes.LightGray;
+            _numberOfTrueKeyStrokes++;
+        }
+
+
     }
 }

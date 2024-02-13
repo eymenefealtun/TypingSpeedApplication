@@ -196,6 +196,8 @@
                                     x:Name="borderOfWriteBox">
                                 <TextBox x:Name="tboxWrite"
                                          Height="50"
+                                         TextChanged="tboxWrite_TextChanged"
+                                         PreviewKeyDown="tboxWrite_PreviewKeyDown"
                                          Width="300"
                                          VerticalContentAlignment="Center"
                                          FontSize="25"
